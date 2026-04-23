@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+}
+
+header {
+  background: #007A4D; /* SA Green */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.search-box, .doi-box {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  justify-content: center;
+}
+
+input {
+  padding: 10px;
+  width: 300px;
+}
+
+button {
+  background: #FFB612; /* Gold */
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+#results, #related {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 5px solid #007A4D;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card small {
+  color: gray;
+}
