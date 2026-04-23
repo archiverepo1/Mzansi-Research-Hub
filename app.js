@@ -1,4 +1,4 @@
-const API = "https://your-worker.your-subdomain.workers.dev";
+const API = "https://holy-frost-78fd.archiverepo1.workers.dev/";
 
 // SEARCH
 async function search() {
