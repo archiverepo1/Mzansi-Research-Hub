@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mzansi Research Hub</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+  <header>
+    <h1>🇿🇦 Mzansi Research Hub</h1>
+    <p>South African Research Articles Discovery Platform</p>
+  </header>
+
+  <main>
+    <!-- SEARCH -->
+    <section class="search-box">
+      <input id="searchInput" placeholder="Search articles, authors, keywords..." />
+      <button onclick="search()">Search</button>
+    </section>
+
+    <!-- DOI INGEST -->
+    <section class="doi-box">
+      <input id="doiInput" placeholder="Enter DOI (e.g. 10.xxxx/...)" />
+      <button onclick="addDOI()">Add Article via DOI</button>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results"></section>
+
+    <!-- RELATED -->
+    <section>
+      <h3>Related Articles</h3>
+      <div id="related"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
