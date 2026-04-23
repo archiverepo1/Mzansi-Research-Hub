@@ -1,8 +1,8 @@
-const API = "https://holy-frost-78fd.archiverepo1.workers.dev/";
+const API = "https://holy-frost-78fd.archiverepo1.workers.dev";
 
-// SEARCH
+// 🔍 SEARCH
 async function search() {
-  const q = document.getElementById("searchInput").value;
+  const q = document.getElementById("searchInput").value.trim();
 
   const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
   const data = await res.json();
@@ -10,54 +10,93 @@ async function search() {
   renderResults(data);
 }
 
-// DOI INGEST
+// 📥 ADD DOI
 async function addDOI() {
-  const doi = document.getElementById("doiInput").value;
+  const doi = document.getElementById("doiInput").value.trim();
 
-  const res = await fetch(`${API}/doi`, {
-    method: "POST",
-    body: JSON.stringify({ doi })
-  });
+  if (!doi) {
+    alert("Enter a DOI");
+    return;
+  }
 
-  const data = await res.json();
+  try {
+    const res = await fetch(`${API}/doi`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ doi }),
+    });
 
-  if (data.success) {
-    alert("Article added");
-    search();
-  } else {
-    alert("DOI not found");
+    const data = await res.json();
+
+    if (data.success) {
+      alert("✅ Article added: " + data.title);
+      search();
+    } else {
+      alert("❌ " + (data.error || "DOI not found"));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Request failed");
   }
 }
 
-// RENDER
+// 🎨 RENDER RESULTS
 function renderResults(records) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
-  records.forEach(r => {
+  if (!records.length) {
+    container.innerHTML = "<p>No results found</p>";
+    return;
+  }
+
+  records.forEach((r) => {
     const div = document.createElement("div");
     div.className = "card";
 
+    const authors = parseAuthors(r.authors);
+
     div.innerHTML = `
       <h3 onclick="loadRelated('${r.id}')">${r.title}</h3>
-      <p>${r.abstract || ""}</p>
-      <small>${r.authors?.join(", ") || ""}</small>
+      <p>${truncate(r.abstract)}</p>
+      <small>${authors}</small>
     `;
 
     container.appendChild(div);
   });
 }
 
-// RELATED
+// 🔗 RELATED
 async function loadRelated(id) {
   const res = await fetch(`${API}/related?id=${id}`);
   const data = await res.json();
 
   const container = document.getElementById("related");
-  container.innerHTML = data.map(r => `
+
+  container.innerHTML = data
+    .map(
+      (r) => `
     <div class="card">
       <h4>${r.title}</h4>
-      <small>Score: ${r.score.toFixed(2)}</small>
+      <small>Relevance: ${(r.score * 100).toFixed(1)}%</small>
     </div>
-  `).join("");
+  `
+    )
+    .join("");
+}
+
+// 🧠 HELPERS
+function parseAuthors(a) {
+  try {
+    const parsed = JSON.parse(a);
+    return parsed.join(", ");
+  } catch {
+    return a || "";
+  }
+}
+
+function truncate(text = "", max = 300) {
+  return text.length > max ? text.slice(0, max) + "..." : text;
 }
