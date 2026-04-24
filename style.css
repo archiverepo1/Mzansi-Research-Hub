@@ -6,7 +6,7 @@ body {
 
 /* HEADER */
 header {
-  background: #007A4D;
+  background: #007A4D; /* SA Green */
   color: white;
   text-align: center;
 }
@@ -16,48 +16,44 @@ header {
 }
 
 .tagline {
-  font-size: 0.9rem;
+  margin-top: 5px;
+  font-size: 0.95rem;
   opacity: 0.9;
 }
 
-/* LOGO BAR */
-.logo-bar {
+/* COLLABORATION BAR */
+.collaboration-bar {
+  background: #005f3a;
+  padding: 10px;
+}
+
+.collab-label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.institutions {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  padding: 10px;
-  background: white;
-}
-
-.logo-bar img {
-  height: 40px;
-  object-fit: contain;
-}
-
-/* FILTER BUTTONS */
-.institution-filters {
-  display: flex;
-  justify-content: center;
   gap: 10px;
-  padding: 10px;
-  background: #005f3a;
+  margin-top: 5px;
 }
 
-.filter-btn {
-  background: white;
-  border: none;
-  padding: 6px 12px;
+.institution {
+  background: #FFB612; /* Gold */
+  color: #000;
+  padding: 5px 10px;
   border-radius: 20px;
-  cursor: pointer;
   font-weight: bold;
+  font-size: 0.9rem;
 }
 
-.filter-btn.active {
-  background: #FFB612;
+.divider {
+  opacity: 0.6;
 }
 
-/* SEARCH */
+/* SEARCH + DOI */
 .search-box, .doi-box {
   display: flex;
   gap: 10px;
@@ -95,16 +91,17 @@ button:hover {
   display: none;
 }
 
-/* CONTENT */
+/* SECTIONS */
 .section-title {
   margin: 20px;
+  color: #333;
 }
 
+/* RESULTS */
 #results, #related {
   padding: 0 20px 20px;
 }
 
-/* CARD */
 .card {
   background: white;
   padding: 15px;
@@ -119,13 +116,18 @@ button:hover {
   background: #f8f8f8;
 }
 
-.card h3 {
+.card h3, .card h4 {
   margin: 0 0 8px 0;
   color: #007A4D;
 }
 
+.card h3:hover, .card h4:hover {
+  text-decoration: underline;
+}
+
 .card small {
   color: gray;
+  font-size: 0.9em;
 }
 
 /* FOOTER */
@@ -137,7 +139,7 @@ footer {
   font-size: 0.85rem;
 }
 
-/* MOBILE */
+/* RESPONSIVE */
 @media (max-width: 600px) {
   .search-box, .doi-box {
     flex-direction: column;
@@ -148,7 +150,7 @@ footer {
     width: 100%;
   }
 
-  .logo-bar {
-    flex-direction: column;
+  .institutions {
+    flex-wrap: wrap;
   }
 }
