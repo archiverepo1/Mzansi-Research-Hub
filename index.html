@@ -7,36 +7,66 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
-    <h1>🇿🇦 Mzansi Research Hub</h1>
-    <p>South African Research Articles Discovery Platform</p>
+    <div class="header-top">
+      <h1>🇿🇦 Mzansi Research Hub</h1>
+      <p class="tagline">A Collaborative South African Research Platform</p>
+    </div>
+
+    <!-- Collaboration Banner -->
+    <div class="collaboration-bar">
+      <span class="collab-label">In collaboration with:</span>
+
+      <div class="institutions">
+        <div class="institution">UFS</div>
+        <div class="divider">•</div>
+        <div class="institution">UCT</div>
+        <div class="divider">•</div>
+        <div class="institution">SPU</div>
+      </div>
+    </div>
   </header>
 
   <main>
-    <!-- Search -->
+
+    <!-- SEARCH -->
     <section class="search-box">
       <input id="searchInput" placeholder="Search articles, authors, keywords..." />
       <button onclick="search()">Search</button>
     </section>
 
-    <!-- DOI Ingest -->
+    <!-- DOI INGEST -->
     <section class="doi-box">
       <input id="doiInput" placeholder="Enter DOI (e.g. 10.xxxx/...)" />
       <button onclick="addDOI()">Add Article via DOI</button>
     </section>
 
-    <!-- Status / messages -->
+    <!-- STATUS -->
     <section id="status"></section>
 
-    <!-- Results -->
-    <section id="results"></section>
+    <!-- RESULTS -->
+    <section>
+      <h2 class="section-title">Research Articles</h2>
+      <div id="results"></div>
+    </section>
 
-    <!-- Related -->
+    <!-- RELATED -->
     <section id="related-section">
-      <h3>Related Articles</h3>
+      <h2 class="section-title">Related Research</h2>
       <div id="related"></div>
     </section>
+
   </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      © 2026 Mzansi Research Hub |
+      Advancing collaborative research across South African institutions
+    </p>
+  </footer>
 
   <script src="app.js"></script>
 </body>
