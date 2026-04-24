@@ -1,21 +1,64 @@
+// ✅ Configure API endpoint
 const API = "https://holy-frost-78fd.archiverepo1.workers.dev";
+
+// Helper: clear status banner
+function clearStatus() {
+  const status = document.getElementById("status");
+  if (!status) return;
+  status.innerHTML = "";
+  status.style.display = "none";
+}
+
+// Helper: show status banner
+function showStatus(text, isError = false) {
+  const status = document.getElementById("status");
+  if (!status) return;
+  status.style.display = "block";
+  status.innerHTML = `<p style="color:${isError ? 'red' : '#007A4D'}">${text}</p>`;
+}
 
 // 🔍 SEARCH
 async function search() {
   const q = document.getElementById("searchInput").value.trim();
 
-  const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
-  const data = await res.json();
+  clearStatus();
+  const container = document.getElementById("results");
+  container.innerHTML = "Searching...";
 
-  renderResults(data);
+  if (!q) {
+    container.innerHTML = "<p>Type something to search.</p>";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    const records = Array.isArray(data?.records) ? data.records : data;
+
+    renderResults(records);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<p>Error searching: ${err.message}</p>`;
+  }
 }
 
 // 📥 ADD DOI
 async function addDOI() {
   const doi = document.getElementById("doiInput").value.trim();
 
+  clearStatus();
   if (!doi) {
-    alert("Enter a DOI");
+    showStatus("Enter a DOI", true);
     return;
   }
 
@@ -31,14 +74,16 @@ async function addDOI() {
     const data = await res.json();
 
     if (data.success) {
-      alert("✅ Article added: " + data.title);
+      showStatus(`✅ Article added: ${data.title}`);
+      document.getElementById("doiInput").value = "";
       search();
     } else {
-      alert("❌ " + (data.error || "DOI not found"));
+      const msg = data.error || "DOI not found";
+      showStatus("❌ " + msg, true);
     }
   } catch (err) {
     console.error(err);
-    alert("Request failed");
+    showStatus("❌ Request failed (network or server error)", true);
   }
 }
 
@@ -47,8 +92,9 @@ function renderResults(records) {
   const container = document.getElementById("results");
   container.innerHTML = "";
 
-  if (!records.length) {
+  if (!records || !records.length) {
     container.innerHTML = "<p>No results found</p>";
+    document.getElementById("related").innerHTML = "";
     return;
   }
 
@@ -59,44 +105,81 @@ function renderResults(records) {
     const authors = parseAuthors(r.authors);
 
     div.innerHTML = `
-      <h3 onclick="loadRelated('${r.id}')">${r.title}</h3>
-      <p>${truncate(r.abstract)}</p>
+      <h3 onclick="loadRelated('${r.id}')">${r.title || "Untitled"}</h3>
+      <p>${truncate(r.abstract, 300)}</p>
       <small>${authors}</small>
+      <div style="font-size:0.8em; margin-top:5px; color:#666;">
+        ${r.journal || "Journal unknown"} • ${r.publication_year || "Year unknown"}
+      </div>
     `;
 
     container.appendChild(div);
   });
 }
 
-// 🔗 RELATED
+// 🔗 RELATED ARTICLES
 async function loadRelated(id) {
-  const res = await fetch(`${API}/related?id=${id}`);
-  const data = await res.json();
+  clearStatus();
+  const relatedContainer = document.getElementById("related");
+  relatedContainer.innerHTML = "Loading related articles...";
 
-  const container = document.getElementById("related");
+  try {
+    const res = await fetch(`${API}/related?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  container.innerHTML = data
-    .map(
-      (r) => `
-    <div class="card">
-      <h4>${r.title}</h4>
-      <small>Relevance: ${(r.score * 100).toFixed(1)}%</small>
-    </div>
-  `
-    )
-    .join("");
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    const related = Array.isArray(data) ? data : [];
+
+    if (!related.length) {
+      relatedContainer.innerHTML = "<p>No strongly related articles found.</p>";
+      return;
+    }
+
+    relatedContainer.innerHTML = related
+      .map(
+        (r) => `
+        <div class="card">
+          <h4 onclick="highlightResult('${r.id}')">${r.title || "Untitled"}</h4>
+          <small>Relevance: ${(r.score * 100).toFixed(1)}%</small>
+          <p style="font-size:0.9em; color:#666;">${truncate(r.abstract, 120)}</p>
+        </div>
+      `
+      )
+      .join("");
+  } catch (err) {
+    console.error(err);
+    relatedContainer.innerHTML = `<p>Error loading related articles: ${err.message}</p>`;
+  }
+}
+
+// 🎯 HELPER: scroll to a result (optional)
+function highlightResult(id) {
+  const element = document.querySelector(`[onclick*="'${id}'"]`);
+  if (element) element.scrollIntoView({ behavior: "smooth" });
 }
 
 // 🧠 HELPERS
 function parseAuthors(a) {
+  if (!a) return "";
   try {
     const parsed = JSON.parse(a);
-    return parsed.join(", ");
+    if (Array.isArray(parsed)) return parsed.join(", ");
+    return String(parsed);
   } catch {
-    return a || "";
+    return String(a);
   }
 }
 
 function truncate(text = "", max = 300) {
-  return text.length > max ? text.slice(0, max) + "..." : text;
+  if (!text) return "";
+  const clean = text.trim();
+  return clean.length > max ? clean.slice(0, max) + "..." : clean;
 }
