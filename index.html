@@ -6,7 +6,6 @@
   <title>Mzansi Research Hub</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
   <header>
     <h1>🇿🇦 Mzansi Research Hub</h1>
@@ -14,23 +13,26 @@
   </header>
 
   <main>
-    <!-- SEARCH -->
+    <!-- Search -->
     <section class="search-box">
       <input id="searchInput" placeholder="Search articles, authors, keywords..." />
       <button onclick="search()">Search</button>
     </section>
 
-    <!-- DOI INGEST -->
+    <!-- DOI Ingest -->
     <section class="doi-box">
       <input id="doiInput" placeholder="Enter DOI (e.g. 10.xxxx/...)" />
       <button onclick="addDOI()">Add Article via DOI</button>
     </section>
 
-    <!-- RESULTS -->
+    <!-- Status / messages -->
+    <section id="status"></section>
+
+    <!-- Results -->
     <section id="results"></section>
 
-    <!-- RELATED -->
-    <section>
+    <!-- Related -->
+    <section id="related-section">
       <h3>Related Articles</h3>
       <div id="related"></div>
     </section>
