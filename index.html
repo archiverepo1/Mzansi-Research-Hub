@@ -8,23 +8,28 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="header-top">
       <h1>🇿🇦 Mzansi Research Hub</h1>
       <p class="tagline">A Collaborative South African Research Platform</p>
     </div>
 
-    <div class="collaboration-bar">
-      <span class="collab-label">In collaboration with:</span>
-
-      <div class="institutions">
-        <div class="institution">UFS</div>
-        <div class="divider">•</div>
-        <div class="institution">UCT</div>
-        <div class="divider">•</div>
-        <div class="institution">SPU</div>
-      </div>
+    <!-- LOGO STRIP -->
+    <div class="logo-bar">
+      <img src="images/ufs.png" alt="UFS Logo">
+      <img src="images/uct.png" alt="UCT Logo">
+      <img src="images/spu.png" alt="SPU Logo">
     </div>
+
+    <!-- FILTER TABS -->
+    <div class="institution-filters">
+      <button class="filter-btn active" onclick="setInstitution('all')">All</button>
+      <button class="filter-btn" onclick="setInstitution('UFS')">UFS</button>
+      <button class="filter-btn" onclick="setInstitution('UCT')">UCT</button>
+      <button class="filter-btn" onclick="setInstitution('SPU')">SPU</button>
+    </div>
+
   </header>
 
   <main>
@@ -35,18 +40,22 @@
       <button onclick="search()">Search</button>
     </section>
 
+    <!-- DOI INGEST -->
     <section class="doi-box">
       <input id="doiInput" placeholder="Enter DOI (e.g. 10.xxxx/...)" />
       <button onclick="addDOI()">Add Article via DOI</button>
     </section>
 
+    <!-- STATUS -->
     <section id="status"></section>
 
+    <!-- RESULTS -->
     <section>
       <h2 class="section-title">Research Articles</h2>
       <div id="results"></div>
     </section>
 
+    <!-- RELATED -->
     <section id="related-section">
       <h2 class="section-title">Related Research</h2>
       <div id="related"></div>
@@ -57,7 +66,7 @@
   <footer>
     <p>
       © 2026 Mzansi Research Hub |
-      Advancing collaborative research across South African institutions
+      Built for South African research collaboration
     </p>
   </footer>
 
