@@ -21,6 +21,8 @@ header {
 input {
   padding: 10px;
   width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
@@ -28,8 +30,25 @@ button {
   border: none;
   padding: 10px 15px;
   cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
+button:hover {
+  background: #eaa500;
+}
+
+/* Status banner */
+#status {
+  padding: 10px 20px;
+  margin: 10px 20px;
+  border-radius: 4px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  display: none;
+}
+
+/* Results and related */
 #results, #related {
   padding: 20px;
 }
@@ -39,12 +58,42 @@ button {
   padding: 15px;
   margin-bottom: 15px;
   border-left: 5px solid #007A4D;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
 }
 
-.card h3 {
-  margin: 0;
+.card:hover {
+  background: #f8f8f8;
+}
+
+.card h3, .card h4 {
+  margin: 0 0 8px 0;
+  color: #007A4D;
+}
+
+.card h3:hover, .card h4:hover {
+  text-decoration: underline;
 }
 
 .card small {
   color: gray;
+  font-size: 0.9em;
+}
+
+/* Related section */
+#related-section {
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .search-box, .doi-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input {
+    width: 100%;
+  }
 }
