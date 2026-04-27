@@ -1,4 +1,4 @@
-const API = "https://holy-frost-78fd.archiverepo1.workers.dev";
+const API = "https://mzansi.archiverepo1.workers.dev/";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadRecent();
