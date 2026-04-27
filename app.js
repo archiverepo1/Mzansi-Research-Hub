@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("doiInput").addEventListener("keydown", e => {
     if (e.key === "Enter") addDOI();
-  });
+  }); 
 });
 
 async function apiGet(path) {
