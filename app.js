@@ -1,4 +1,4 @@
-const API = "https://mzansi-test-api.archiverepo1.workers.dev//";
+const API = "/api";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadRecent();
