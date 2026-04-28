@@ -1,40 +1,18 @@
-const API = "/api";
+const API_URL = "https://mzansi-test-api.archiverepo1.workers.dev/api/test";
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadRecent();
-
-  document.getElementById("searchInput").addEventListener("keydown", e => {
-    if (e.key === "Enter") search();
-  });
-
-  document.getElementById("doiInput").addEventListener("keydown", e => {
-    if (e.key === "Enter") addDOI();
-  }); 
-});
-
-async function apiGet(path) {
-  const res = await fetch(`${API}${path}`);
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-  return data;
-}
-
-function setStatus(message, type = "info") {
-  const status = document.getElementById("status");
-  status.style.display = "block";
-  status.innerHTML = `<p>${escapeHtml(message)}</p>`;
-  status.className = type;
-}
-
-async function loadRecent() {
-  const results = document.getElementById("results");
-  const related = document.getElementById("related");
-
-  results.innerHTML = "<p>Loading recent articles...</p>";
-  related.innerHTML = "";
-
+async function testAPI() {
   try {
-    const data = await apiGet("/recent");
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    console.log("API RESPONSE:", data);
+
+    document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+  } catch (err) {
+    console.error("API ERROR:", err);
+  }
+}
+
+testAPI();    const data = await apiGet("/recent");
     renderResults(Array.isArray(data) ? data : []);
   } catch (err) {
     results.innerHTML = `<p>Could not load recent articles: ${escapeHtml(err.message)}</p>`;
